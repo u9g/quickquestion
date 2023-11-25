@@ -1,0 +1,42 @@
+query {
+  File {
+    function {
+      parameter {
+        assignment {
+          assignment_to_variable_name @tag(name: "x")
+        }
+      }
+      is_async @filter(op: "=", value: ["$false"])
+      is_generator @filter(op: "=", value: ["$false"])
+      is_getter @filter(op: "=", value: ["$false"])
+      is_setter @filter(op: "=", value: ["$false"])
+      body {
+        statement {
+          ... on ReturnStatement {
+            expression {
+              ... on FnCall {
+                callee {
+                  ... on VarRef {
+                    name @filter(op: "one_of", value: ["$dont_duplicate_fns"])
+                  }
+                }
+                argument {
+                  value {
+                    ... on VarRef {
+                      name @filter(op: "=", value: ["%x"])
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      span {
+        start @output(name: "span_start")
+        end @output(name: "span_end")
+      }
+    }
+  }
+}
+

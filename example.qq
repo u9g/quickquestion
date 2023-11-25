@@ -1,0 +1,25 @@
+query.File.function {
+    parameter.assignment.assignment_to_variable_name @tag(name: "x")
+    is_async = $false
+    is_generator = $false
+    is_getter = $false
+    is_setter = $false
+
+    body.statement as ReturnStatement {
+        expression as FnCall {
+            callee as VarRef {
+                name one_of $dont_duplicate_fns
+            }
+
+            argument.value as VarRef {
+                name = %x
+            }
+        }
+    }
+
+
+    span {
+        start @output(name: "span_start")
+        end @output(name: "span_end")
+    }
+}

@@ -1,0 +1,43 @@
+query = { block }
+
+statement_list = { (block | filter | directives_on_identifier)+ }
+
+filter = !{ chained_identifier ~ operator ~ filter_identifier }
+
+filter_identifier = @{ ("$" | "%") ~ identifier }
+
+directives_on_identifier = { chained_identifier ~ directive+ }
+
+block = { chained_identifier ~ ( directive_prefixed_body | casted_body ) }
+
+directive_prefixed_body = { directive* ~ block_body }
+
+casted_body = { as_cast ~ block_body }
+
+as_cast = @{ "as " ~ casted_to }
+
+casted_to = !{ identifier }
+
+directive = @{ "@" ~ directive_name ~ ("(" ~ argument_list ~ ")")? }
+
+directive_name = !{ identifier }
+
+argument_list = @{ argument ~ (", " ~ argument)? }
+
+argument = @{ argument_name ~ ": " ~ argument_value }
+
+argument_name = !{ identifier }
+
+argument_value = !{ string }
+
+string = @{ "\"" ~ identifier ~ "\"" }
+
+block_body = _{ "{" ~ statement_list ~ "}" }
+
+WHITESPACE = _{ " " | "\n" }
+
+identifier = @{ (ASCII_ALPHA | "_")+ }
+
+operator = { "=" | "one_of" }
+
+chained_identifier = @{ identifier ~ ("." ~ identifier)* }

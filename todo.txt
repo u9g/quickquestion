@@ -1,0 +1,1 @@
+1. figure out how to put filters like `@fold @transform(op: "count") @filter(op: "=", value: "$zero")`

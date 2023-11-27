@@ -38,6 +38,6 @@ WHITESPACE = _{ " " | "\n" }
 
 identifier = @{ (ASCII_ALPHA | "_")+ }
 
-operator = { "=" | "one_of" }
+operator = { "=" | "one_of" | "!=" }
 
 chained_identifier = @{ identifier ~ ("." ~ identifier)* }

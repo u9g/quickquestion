@@ -1,0 +1,19 @@
+{
+    "brackets": [
+		["{", "}"],
+		["(", ")"]
+	],
+    "autoClosingPairs": [
+		{ "open": "{", "close": "}" },
+		{ "open": "(", "close": ")" },
+	],
+    "autoCloseBefore": "[a-zA-Z] \n\t",
+    "surroundingPairs": [
+		["{", "}"],
+		["(", ")"],
+	],
+    "indentationRules": {
+		"increaseIndentPattern": "{",
+		"decreaseIndentPattern": "}"
+	}
+}

@@ -1,1 +1,15 @@
 1. figure out how to put filters like `@fold @transform(op: "count") @filter(op: "=", value: "$zero")`
+
+maybe instead of:
+
+importable_path {
+    path = %path
+    public_api != $true
+}
+
+it should be:
+
+foreach (importable_path) {
+    path = %path
+    public_api != $true
+}

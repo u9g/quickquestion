@@ -15,7 +15,7 @@ mod convert;
 mod printer;
 
 fn main() {
-    let example = fs::read_to_string("example.qq").unwrap();
+    let example = fs::read_to_string("example2.qq").unwrap();
 
     let root_block: Block = QuickQuestionParser::parse(Rule::query, &example)
         .unwrap()

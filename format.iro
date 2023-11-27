@@ -1,0 +1,263 @@
+#################################################################
+## Iro
+################################################################ 
+##
+## * Press Ctrl + '+'/'-' To Zoom in
+## * Press Ctrl + S to save and recalculate... 
+## * Documents are saved to web storage.
+## * Only one save slot supported.
+## * Matches cannot span lines.
+## * Unicode chars must be defined in \u0000 to \uffff format.
+## * All matches must be contained by a single group ( ... )
+## * Look behinds not permitted, (?<= or (?<!
+## * Look forwards are permitted (?= or (?!
+## * Constants are defined as __my_const = (......)
+## * The \= format allows unescaped regular expressions
+## * Constants referenced by match \= $${__my_const}
+## * Constants can reference other constants
+## * You are free to delete all the default scopes.
+## * Twitter : ainslec , Web: http://eeyo.io/iro
+##
+################################################################
+
+name                   = qq
+file_extensions []     = qq;
+
+################################################################
+## Styles
+################################################################
+
+styles [] {
+
+.comment : style {
+   color                 = light_green
+   italic                = true
+   ace_scope             = comment
+   textmate_scope        = comment
+   pygments_scope        = Comment
+}
+
+.keyword : style {
+   color     = red
+   ace_scope             = keyword
+   textmate_scope        = keyword
+   pygments_scope        = Keyword
+}
+
+.punctuation : style {
+   color     = grey
+   ace_scope             = punctuation
+   textmate_scope        = punctuation
+   pygments_scope        = Punctuation
+}
+
+.text : style {
+   color                 = cyan
+   ace_scope             = text
+   textmate_scope        = variable
+   pygments_scope        = String
+}
+
+.type : style {
+   color = #008080
+   
+   textmate_scope = entity.name.type
+}
+
+.operator : style {
+   color = green
+   
+   textmate_scope = keyword.operator
+}
+
+.variable : style {
+   color = orange
+   
+   textmate_scope = variable.other.constant
+}
+
+.variable_prefix : style {
+   color = red
+   
+   textmate_scope = storage.type
+}
+
+.directive_name_st : style {
+   color = yellow
+   
+   textmate_scope = entity.name.function
+}
+
+.directive_paren : style {
+   color = blue
+   
+   textmate_scope = meta.brace.round
+}
+
+.argument_value_st : style {
+   color = green
+   
+   textmate_scope = string.quoted.double
+}
+
+}
+
+#################################################
+## Parse contexts
+#################################################
+
+contexts [] {
+
+##############################################
+## Main Context - Entry point context
+##############################################
+
+main : context {
+   : include "block" ;
+}
+
+block : context {
+   : include "chained_identifier" ;
+   : include "cast" ;
+   : include "directive";
+
+   : push {
+      regex \= (\{)
+      styles[] = .punctuation ;
+      context[] = block_body ;
+   }
+}
+
+block_body : context {
+   : pop {
+      regex \= (\})
+      styles[] = .punctuation;
+   }
+   
+   : include "block" ;
+   
+   : include "directive";
+   
+   : include "statement";
+}
+
+#################################################
+## End of Contexts
+#################################################
+
+statement : context {
+   : include "identifier";
+   
+   : inline_push {
+      regex \= ( (one_of|=|!=) )
+      
+      styles[] = .operator ;
+      
+      : pop {
+         regex \= ([A-Za-z_]+)
+         styles[] = .variable ;
+      }
+      
+      : pattern {
+         regex \= (\$|%)
+         styles[] = .variable_prefix ;
+      }
+   }
+}
+
+directive : context {
+   : inline_push {
+      regex \= (@)
+      styles[] = .directive_name_st;
+      
+      : pop {
+         regex \= (?![A-Za-z_\(\)])
+         styles[] = .punctuation;
+      }
+      
+      : include "directive_name" ;
+      
+      : inline_push {
+         regex \= (\()
+         styles[] = .directive_paren;
+         
+         : pop {
+            regex \= (\))
+            styles[] = .directive_paren;
+         }
+         
+         : include "arguments" ;
+      }
+   }
+}
+
+arguments : context {
+   : include "identifier" ;
+
+   : pattern {
+      regex \= (: )
+      styles[] = .punctuation;
+   }
+   
+   : inline_push {
+      regex \= (")
+      styles[] = .argument_value_st;
+      
+      : pop {
+         regex \= (")
+         styles[] = .argument_value_st;
+      }
+      
+      : include "argument_value" ;
+   }
+}
+
+argument_value : context {
+   : pattern {
+      regex \= ([A-Za-z_]+)
+      styles[] = .argument_value_st ;
+   }
+}
+
+directive_name : context {
+   : pattern {
+      regex \= ([A-Za-z_]+)
+      styles[] = .directive_name_st ;
+   }
+}
+
+identifier : context {
+   : pattern {
+      regex \= ([A-Za-z_]+)
+      styles[] = .text ;
+   }
+}
+
+chained_identifier : context {
+   : include "identifier" ;
+   
+   : pattern {
+      regex \= (\\.)
+      styles[] = .punctuation;
+   }
+}
+
+cast : context {
+   : inline_push {
+      regex \= ( as )
+      
+      styles[] = .keyword ;
+      
+      : pop {
+         regex \= ( )
+         styles[] = .punctuation;
+      }
+      
+      : pattern {
+         regex \= ([A-Za-z_]+)
+         styles[] = .type ;
+      }
+   }
+}
+
+}

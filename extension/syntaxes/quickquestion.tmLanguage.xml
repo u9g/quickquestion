@@ -32,6 +32,18 @@
         </dict>
        </array>
     </dict>
+    <key>argument_value</key>
+    <dict>
+      <key>patterns</key>
+      <array> 
+        <dict>
+          <key>match</key>
+          <string>([A-Za-z_]+)</string>
+          <key>name</key>
+          <string>string.quoted.double.qq</string>
+        </dict>
+       </array>
+    </dict>
     <key>arguments</key>
     <dict>
       <key>patterns</key>
@@ -54,7 +66,7 @@
             <key>1</key>
             <dict>
               <key>name</key>
-              <string>variable.other.property.qq</string>
+              <string>string.quoted.double.qq</string>
             </dict>
           </dict>
           <key>patterns</key>
@@ -71,7 +83,7 @@
             <key>1</key>
             <dict>
               <key>name</key>
-              <string>variable.other.property.qq</string>
+              <string>string.quoted.double.qq</string>
             </dict>
           </dict>
         </dict>
@@ -83,7 +95,7 @@
       <array> 
         <dict>
           <key>include</key>
-          <string>#identifier</string>
+          <string>#argument_value</string>
         </dict>
        </array>
     </dict>
@@ -227,7 +239,7 @@
             <key>1</key>
             <dict>
               <key>name</key>
-              <string>punctuation.qq</string>
+              <string>entity.name.function.qq</string>
             </dict>
           </dict>
           <key>patterns</key>
@@ -238,7 +250,7 @@
             </dict>
            </array>
           <key>end</key>
-          <string>(?!(\)|[A-Za-z_]))</string>
+          <string>(?![A-Za-z_\(\)])</string>
           <key>endCaptures</key>
           <dict>
             <key>1</key>
@@ -266,7 +278,7 @@
             <key>1</key>
             <dict>
               <key>name</key>
-              <string>punctuation.qq</string>
+              <string>meta.brace.round.qq</string>
             </dict>
           </dict>
           <key>patterns</key>
@@ -283,7 +295,7 @@
             <key>1</key>
             <dict>
               <key>name</key>
-              <string>punctuation.qq</string>
+              <string>meta.brace.round.qq</string>
             </dict>
           </dict>
         </dict>
@@ -307,7 +319,7 @@
           <key>match</key>
           <string>([A-Za-z_]+)</string>
           <key>name</key>
-          <string>keyword.control.flow.qq</string>
+          <string>entity.name.function.qq</string>
         </dict>
        </array>
     </dict>
@@ -319,7 +331,7 @@
           <key>match</key>
           <string>([A-Za-z_]+)</string>
           <key>name</key>
-          <string>variable.other.property.qq</string>
+          <string>variable.qq</string>
         </dict>
        </array>
     </dict>
@@ -356,7 +368,7 @@
             <key>1</key>
             <dict>
               <key>name</key>
-              <string>variable.language.this.qq</string>
+              <string>variable.other.constant.qq</string>
             </dict>
           </dict>
         </dict>
@@ -368,9 +380,9 @@
       <array> 
         <dict>
           <key>match</key>
-          <string>($|%)</string>
+          <string>(\$|%)</string>
           <key>name</key>
-          <string>keyword.operator.expression.qq</string>
+          <string>storage.type.qq</string>
         </dict>
        </array>
     </dict>

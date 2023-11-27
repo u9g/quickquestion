@@ -1,0 +1,40 @@
+{
+	"name": "quickquestion",
+	"description": "Quick Question language support",
+	"version": "0.0.1",
+	"publisher": "u9g",
+	"repository": "https://github.com/Microsoft/u9g/quickquestion",
+	"engines": {
+		"vscode": "^1.74.0"
+	},
+	"activationEvents": [],
+	"main": "./extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "extension.helloWorld",
+				"title": "Hello World"
+			}
+		],
+		"languages": [
+			{
+				"id": "quickquestion",
+				"extensions": [
+					".qq"
+				],
+				"configuration": "./language-configuration.json"
+			}
+		],
+		"grammars": [
+			{
+				"language": "quickquestion",
+				"scopeName": "source.qq",
+				"path": "./syntaxes/quickquestion.tmLanguage.xml"
+			}
+		]
+	},
+	"scripts": {},
+	"devDependencies": {
+		"@types/vscode": "^1.73.0"
+	}
+}

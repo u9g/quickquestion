@@ -1,0 +1,19 @@
+CrateDiff.baseline.item as Struct {
+    visibility_limit = $public
+    struct_type @output @tag
+
+    importable_path {
+        path @output @tag
+        public_api = $true
+    }
+
+    current.item as Struct {
+        visibility_limit = $public
+        name @output(name: "struct_name")
+        struct_type = %struct_type
+        importable_path {
+            path = %path
+            public_api != $true
+        }
+    }
+}
